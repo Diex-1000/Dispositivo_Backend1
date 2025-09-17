@@ -66,9 +66,9 @@ def crear():
 # Crear endpoint usando PUT y pasando datos por el body y el url
 
 
-@tareas_bp.route('/modificar/<int:id_tarea>', methods=['PUT'])
+@tareas_bp.route('/modificar/<int:id_tareas>', methods=['PUT'])
 @jwt_required()
-def modificar(id_tarea):
+def modificar(id_tareas):
 
     # Obtenemos la identidad del dueño de la tarea
     current_user = get_jwt_identity()
@@ -80,8 +80,8 @@ def modificar(id_tarea):
 
     cursor = get_db_connection()
 
-    query = "SELECT * FROM tareas WHERE id_tarea = %s"
-    cursor.execute(query, (id_tarea,))
+    query = "SELECT * FROM tareas WHERE id_tareas = %s"
+    cursor.execute(query, (id_tareas,))
     tarea = cursor.fetchone()
 
     # Verificamos que la tarea pertenezca al usuario logueado
@@ -96,7 +96,7 @@ def modificar(id_tarea):
     # Actualizar los datos
     try:
         cursor.execute(
-            "UPDATE tareas SET descripcion = %s WHERE id_tarea = %s", (descripcion, id_tarea))
+            "UPDATE tareas SET descripcion = %s WHERE id_tareas = %s", (descripcion, id_tareas))
         cursor.connection.commit()
         return jsonify({"Mensaje": "Datos actualizados correctamente"}), 200
     except Exception as e:
